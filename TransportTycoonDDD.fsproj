@@ -5,7 +5,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="TransportTycoon.fs" />
-    <Compile Include="test.fsx" />
+    <None Include="test.fsx" />
     <Compile Include="TransportTycoon.Should.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
