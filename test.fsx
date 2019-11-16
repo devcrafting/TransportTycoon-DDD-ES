@@ -1,22 +1,6 @@
-type Location =
-    | Factory
-    | Port
-    | WarehouseA
-    | WarehouseB
-type Position =
-    | WaitingAt of Location
-    | InTransitTo of cargoDestination:Location option * Location * remainingHours:int
-    | UnloadingAt of cargoDestination:Location * Location
-type Transport =
-    | Truck
-    | Boat
-type State = {
-    StockedCargos: Map<Location, Location list>
-    Transports: (Transport * Position) list
-}
+#load "TransportTycoon.fs"
 
-let Truck position positionData = Truck, position positionData
-let Boat position = Boat, position
+open TransportTycoon
 
 let initialCargos = Map.empty |> Map.add Factory [WarehouseA; WarehouseB(*; WarehouseA*)]
 let startingState = {
