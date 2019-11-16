@@ -29,7 +29,7 @@ let should =
                                 ]
                             } @>
             )
-            testCase "do not load waiting transport when no cargo stocked" (fun () ->
+            testCase "not load waiting transport when no cargo stocked" (fun () ->
                 let waitingTransportWithoutCargosStocked =
                     {
                         StockedCargos = Map.ofList []
@@ -38,13 +38,34 @@ let should =
                 test <@ load waitingTransportWithoutCargosStocked = 
                             waitingTransportWithoutCargosStocked @>
             )
-            testCase "do not load when transport not waiting" (fun () ->
+            testCase "not load when transport not waiting" (fun () ->
                 let inTransitTransport =
                     {
                         StockedCargos = Map.ofList []
                         Transports = [ Truck InTransitTo (Port, Some WarehouseA, 1) ]
                     }
                 test <@ load inTransitTransport = inTransitTransport @>
+            )
+        ]
+
+        testList "Move should" [
+            testCase "move in transit transports" (fun () ->
+                let inTransitTransports =
+                    {
+                        StockedCargos = Map.ofList [(Factory, []); (Port, [])]
+                        Transports = [
+                            Truck InTransitTo (WarehouseB, Some WarehouseB, 4)
+                            Boat InTransitTo (WarehouseA, Some WarehouseA, 4)
+                        ]
+                    }
+                test <@ move inTransitTransports = 
+                            {
+                                StockedCargos = Map.ofList [(Factory, []); (Port, [])]
+                                Transports = [
+                                    Truck InTransitTo (WarehouseB, Some WarehouseB, 3)
+                                    Boat InTransitTo (WarehouseA, Some WarehouseA, 3)
+                                ]
+                            } @>
             )
         ]
     ]

@@ -53,10 +53,18 @@ let load world =
         StockedCargos = remainingStockedCargos
         Transports = transports |> List.rev }
 
-let move world = world
+let move world =
+    let transports =
+        world.Transports
+        |> List.map (fun (transport, position) ->
+            transport, 
+            match position with
+            | InTransitTo (nextLocation, destination, hours) ->
+                InTransitTo (nextLocation, destination, hours - 1))
+    { world with Transports = transports}            
 
 let unload world = world
 
-let spend1Hour : (World -> World) = load >> move >> unload
+let spend1Hour = load >> move >> unload
 
 let computeHowLongItTakesToDeliver _ = 0
