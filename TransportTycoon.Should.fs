@@ -85,5 +85,23 @@ let should =
                                 ]
                             } @>
             )
+            testCase "be waiting when in transit without any cargo and only 1 remaining hour" (fun () ->
+                let inTransitTransports =
+                    {
+                        StockedCargos = Map.ofList [(Factory, []); (Port, [])]
+                        Transports = [
+                            Truck InTransitTo (Factory, None, 1)
+                            Boat InTransitTo (Port, None, 1)
+                        ]
+                    }
+                test <@ move inTransitTransports = 
+                            {
+                                StockedCargos = Map.ofList [(Factory, []); (Port, [])]
+                                Transports = [
+                                    Truck WaitingAt Factory
+                                    Boat WaitingAt Port
+                                ]
+                            } @>
+            )
         ]
     ]

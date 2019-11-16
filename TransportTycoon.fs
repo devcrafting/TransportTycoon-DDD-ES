@@ -61,6 +61,8 @@ let move world =
             match position with
             | InTransitTo (nextLocation, Some destination, 1) ->
                 UnloadingAt (nextLocation, destination)
+            | InTransitTo (nextLocation, None, 1) ->
+                WaitingAt nextLocation
             | InTransitTo (nextLocation, destination, hours) ->
                 InTransitTo (nextLocation, destination, hours - 1))
     { world with Transports = transports}            
