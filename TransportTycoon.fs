@@ -64,7 +64,8 @@ let move world =
             | InTransitTo (nextLocation, None, 1) ->
                 WaitingAt nextLocation
             | InTransitTo (nextLocation, destination, hours) ->
-                InTransitTo (nextLocation, destination, hours - 1))
+                InTransitTo (nextLocation, destination, hours - 1)
+            | _ -> position)
     { world with Transports = transports}            
 
 let unload world = world

@@ -103,5 +103,16 @@ let should =
                                 ]
                             } @>
             )
+            testCase "not move when not in transit" (fun () ->
+                let notInTransitTransports =
+                    {
+                        StockedCargos = Map.ofList [(Factory, []); (Port, [])]
+                        Transports = [
+                            Truck WaitingAt Factory
+                            Boat UnloadingAt (Port, WarehouseA)
+                        ]
+                    }
+                test <@ move notInTransitTransports = notInTransitTransports @>
+            )
         ]
     ]
