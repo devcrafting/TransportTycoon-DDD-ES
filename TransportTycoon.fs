@@ -57,8 +57,10 @@ let move world =
     let transports =
         world.Transports
         |> List.map (fun (transport, position) ->
-            transport, 
+            transport,
             match position with
+            | InTransitTo (nextLocation, Some destination, 1) ->
+                UnloadingAt (nextLocation, destination)
             | InTransitTo (nextLocation, destination, hours) ->
                 InTransitTo (nextLocation, destination, hours - 1))
     { world with Transports = transports}            
