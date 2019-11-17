@@ -22,11 +22,14 @@ type Path = Path of Leg list
 
 let Truck position positionData = Truck, position positionData
 let Boat position positionData = Boat, position positionData
+let Path legs = 
+    let (Leg (_, destination, _)) = legs |> List.last
+    destination, Path legs 
 
 let leg fromLocation toLocation hours = Leg (fromLocation, toLocation, hours)
 let paths = Map.ofList [
-    (WarehouseA, Path [leg Factory Port 1; leg Port WarehouseA 4])
-    (WarehouseB, Path [leg Factory WarehouseB 5])
+    Path [leg Factory Port 1; leg Port WarehouseA 4]
+    Path [leg Factory WarehouseB 5]
 ]
 
 let private pathTo destination fromLocation =
