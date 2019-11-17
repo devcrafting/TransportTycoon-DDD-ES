@@ -60,7 +60,7 @@ let private goBackFrom destination fromLocation =
     let (Leg (from, _, hours)) = path |> List.find (function Leg (_, to', _) -> to' = fromLocation)
     from, None, hours
 
-let private tryLoading transport fromRemainingStockedCargos position events =
+let private tryLoading transport fromRemainingStockedCargos position currentTime events =
     match position with
     | WaitingAt location ->
         match fromRemainingStockedCargos |> Map.tryFind location with
@@ -72,19 +72,19 @@ let private tryLoading transport fromRemainingStockedCargos position events =
             remainingCargos,InTransitTo (nextLocation, cargo, remainingHours),
                 events @ [Departed (
                             nextLocation,
-                            { Time = 0
+                            { Time = currentTime
                               Kind = transport
                               Location = location
                               Cargo = { Destination = firstCargoDestination } })]
         | _ -> fromRemainingStockedCargos, position, events
     | _ -> fromRemainingStockedCargos, position, events
 
-let load world =
+let load currentTime world =
     let remainingStockedCargos, transports, events =
         world.Transports
         |> List.fold (fun (remainingStockedCargos, transports, events) (transport, position) ->
             let remainingStockedCargos, newPosition, events =
-                tryLoading transport remainingStockedCargos position events
+                tryLoading transport remainingStockedCargos position currentTime events
             remainingStockedCargos,
                 (transport, newPosition) :: transports,
                 events) (world.StockedCargos, [], [])
@@ -122,14 +122,14 @@ let unload world =
             stockedCargos, (transport, newPosition)::transports) (world.StockedCargos, [])
     { world with Transports = transports |> List.rev; StockedCargos = stockedCargos }            
 
-let spend1Hour = load >> move >> unload
+let spend1Hour currentTime = (load currentTime) >> move >> unload
 
-let rec private runUntilFulfilling (request: Location list) iteration world =
+let rec private runUntilFulfilling (request: Location list) currentTime world =
     if world.StockedCargos |> Map.filter (fun _ stock -> stock |> List.isEmpty |> not) |> Map.toList = (request |> List.groupBy id) then
-        iteration, world
+        currentTime, world
     else
-        let nextWorld = world |> spend1Hour
-        runUntilFulfilling request (iteration + 1) nextWorld
+        let nextWorld = world |> spend1Hour currentTime
+        runUntilFulfilling request (currentTime + 1) nextWorld
 
 let computeHowLongItTakesToDeliver cargosRequest withTransports =
     { Transports = withTransports

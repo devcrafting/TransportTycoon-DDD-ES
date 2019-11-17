@@ -38,7 +38,8 @@ let should =
                         StockedCargos = Map.ofList [(Factory, [WarehouseA]); (Port, [WarehouseA])]
                         Transports = [ Truck WaitingAt Factory; Boat WaitingAt Port ]
                     }
-                test <@ load waitingTransportWithCargoStockedAtWaitingLocation = 
+                let currentTime = System.Random().Next()
+                test <@ load currentTime waitingTransportWithCargoStockedAtWaitingLocation = 
                             {
                                 StockedCargos = Map.ofList [(Factory, []); (Port, [])]
                                 Transports = [
@@ -47,13 +48,13 @@ let should =
                                 ]
                                 History = [
                                     Departed (Port, {
-                                        Time = 0
+                                        Time = currentTime
                                         Kind = Transport.Truck
                                         Location = Factory
                                         Cargo = { Destination = WarehouseA }
                                     })
                                     Departed (WarehouseA, {
-                                        Time = 0
+                                        Time = currentTime
                                         Kind = Transport.Boat
                                         Location = Port
                                         Cargo = { Destination = WarehouseA }
@@ -67,7 +68,7 @@ let should =
                         StockedCargos = Map.ofList []
                         Transports = [ Truck WaitingAt Factory ]
                     }
-                test <@ load waitingTransportWithoutCargosStocked = 
+                test <@ load 0 waitingTransportWithoutCargosStocked = 
                             waitingTransportWithoutCargosStocked @>
             )
             testCase "not load when transport not waiting" (fun () ->
@@ -76,7 +77,7 @@ let should =
                         StockedCargos = Map.ofList []
                         Transports = [ Truck InTransitTo (Port, Some WarehouseA, 1) ]
                     }
-                test <@ load inTransitTransport = inTransitTransport @>
+                test <@ load 0 inTransitTransport = inTransitTransport @>
             )
         ]
 
