@@ -11,6 +11,21 @@ let should =
             testCase "return 0 when no cargos" (fun () ->
                 test <@ computeHowLongItTakesToDeliver [] = 0 @>
             )
+            testCase "return 5 when one cargo A" (fun () ->
+                test <@ computeHowLongItTakesToDeliver [WarehouseA] = 5 @>
+            )
+            testCase "return 5 when one cargo AB" (fun () ->
+                test <@ computeHowLongItTakesToDeliver [WarehouseA; WarehouseB] = 5 @>
+            )
+            testCase "return 5 when one cargo BB" (fun () ->
+                test <@ computeHowLongItTakesToDeliver [WarehouseB; WarehouseB] = 5 @>
+            )
+            testCase "return 7 when one cargo ABB" (fun () ->
+                test <@ computeHowLongItTakesToDeliver [WarehouseA; WarehouseB; WarehouseB] = 7 @>
+            )
+            testCase "return 13 when one cargo AAB" (fun () ->
+                test <@ computeHowLongItTakesToDeliver [WarehouseA; WarehouseA; WarehouseB] = 13 @>
+            )
         ]
 
         testList "Load should" [

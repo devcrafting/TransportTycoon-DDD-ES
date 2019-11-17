@@ -39,3 +39,11 @@ let stateAfter5Hours = {
     StockedCargos = stockedCargosAfterUnloadingInWarehouse
     Transports = [ Truck WaitingAt Factory; Truck InTransitTo (Factory, None, 5); Boat InTransitTo (Port, None, 4) ]
 }
+
+startingState |> spend1Hour = stateAfter1Hour
+stateAfter1Hour |> spend1Hour = stateAfter2Hours
+stateAfter2Hours |> spend1Hour = stateAfter3Hours
+stateAfter3Hours |> spend1Hour = stateAfter4Hours
+stateAfter4Hours |> spend1Hour = stateAfter5Hours
+
+computeHowLongItTakesToDeliver [ WarehouseA ]

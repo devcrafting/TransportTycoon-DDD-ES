@@ -93,4 +93,18 @@ let unload world =
 
 let spend1Hour = load >> move >> unload
 
-let computeHowLongItTakesToDeliver _ = 0
+let private world = {
+    StockedCargos = Map.empty
+    Transports = [ Truck WaitingAt Factory; Truck WaitingAt Factory; Boat WaitingAt Port ]
+}
+
+let rec private runUntilFulfilling (request: Location list) iteration world =
+    if world.StockedCargos |> Map.filter (fun _ stock -> stock |> List.isEmpty |> not) |> Map.toList = (request |> List.groupBy id) then
+        iteration
+    else
+        let nextWorld = world |> spend1Hour
+        runUntilFulfilling request (iteration + 1) nextWorld
+
+let computeHowLongItTakesToDeliver cargosRequest =
+    { world with StockedCargos = Map.ofList [(Factory, cargosRequest)] }
+    |> runUntilFulfilling cargosRequest 0
