@@ -29,15 +29,17 @@ let should =
             )
         ]
 
+        let world = { StockedCargos = Map.empty; Transports = []; History = [] }
+
         testList "Load should" [
             testCase "load waiting transport when there is cargo stocked at waiting location" (fun () ->
                 let waitingTransportWithCargoStockedAtWaitingLocation =
-                    {
+                    { world with
                         StockedCargos = Map.ofList [(Factory, [WarehouseA]); (Port, [WarehouseA])]
                         Transports = [ Truck WaitingAt Factory; Boat WaitingAt Port ]
                     }
                 test <@ load waitingTransportWithCargoStockedAtWaitingLocation = 
-                            {
+                            { world with
                                 StockedCargos = Map.ofList [(Factory, []); (Port, [])]
                                 Transports = [
                                     Truck InTransitTo (Port, Some WarehouseA, 1)
@@ -47,7 +49,7 @@ let should =
             )
             testCase "not load waiting transport when no cargo stocked" (fun () ->
                 let waitingTransportWithoutCargosStocked =
-                    {
+                    { world with
                         StockedCargos = Map.ofList []
                         Transports = [ Truck WaitingAt Factory ]
                     }
@@ -56,7 +58,7 @@ let should =
             )
             testCase "not load when transport not waiting" (fun () ->
                 let inTransitTransport =
-                    {
+                    { world with
                         StockedCargos = Map.ofList []
                         Transports = [ Truck InTransitTo (Port, Some WarehouseA, 1) ]
                     }
@@ -67,7 +69,7 @@ let should =
         testList "Move should" [
             testCase "move in transit transports" (fun () ->
                 let inTransitTransports =
-                    {
+                    { world with
                         StockedCargos = Map.ofList [(Factory, []); (Port, [])]
                         Transports = [
                             Truck InTransitTo (WarehouseB, Some WarehouseB, 4)
@@ -75,7 +77,7 @@ let should =
                         ]
                     }
                 test <@ move inTransitTransports = 
-                            {
+                            { world with
                                 StockedCargos = Map.ofList [(Factory, []); (Port, [])]
                                 Transports = [
                                     Truck InTransitTo (WarehouseB, Some WarehouseB, 3)
@@ -85,7 +87,7 @@ let should =
             )
             testCase "be unloading when in transit with a cargo and only 1 remaining hour" (fun () ->
                 let inTransitTransports =
-                    {
+                    { world with
                         StockedCargos = Map.ofList [(Factory, []); (Port, [])]
                         Transports = [
                             Truck InTransitTo (Port, Some WarehouseA, 1)
@@ -93,7 +95,7 @@ let should =
                         ]
                     }
                 test <@ move inTransitTransports = 
-                            {
+                            { world with
                                 StockedCargos = Map.ofList [(Factory, []); (Port, [])]
                                 Transports = [
                                     Truck UnloadingAt (Port, WarehouseA)
@@ -103,7 +105,7 @@ let should =
             )
             testCase "be waiting when in transit without any cargo and only 1 remaining hour" (fun () ->
                 let inTransitTransports =
-                    {
+                    { world with
                         StockedCargos = Map.ofList [(Factory, []); (Port, [])]
                         Transports = [
                             Truck InTransitTo (Factory, None, 1)
@@ -111,7 +113,7 @@ let should =
                         ]
                     }
                 test <@ move inTransitTransports = 
-                            {
+                            { world with
                                 StockedCargos = Map.ofList [(Factory, []); (Port, [])]
                                 Transports = [
                                     Truck WaitingAt Factory
@@ -121,7 +123,7 @@ let should =
             )
             testCase "not move when not in transit" (fun () ->
                 let notInTransitTransports =
-                    {
+                    { world with
                         StockedCargos = Map.ofList [(Factory, []); (Port, [])]
                         Transports = [
                             Truck WaitingAt Factory
@@ -135,7 +137,7 @@ let should =
         testList "Unload should" [
             testCase "unload cargo in location stock and go back without cargos" (fun () ->
                 let unloadingTranports =
-                    {
+                    { world with
                         StockedCargos = Map.ofList []
                         Transports = [
                             Truck UnloadingAt (WarehouseB, WarehouseB)
@@ -143,7 +145,7 @@ let should =
                         ]
                     }
                 test <@ unload unloadingTranports = 
-                            {
+                            { world with
                                 StockedCargos = Map.ofList [(WarehouseA, [WarehouseA]); (WarehouseB, [WarehouseB])]
                                 Transports = [
                                     Truck InTransitTo (Factory, None, 5)
@@ -153,7 +155,7 @@ let should =
             )
             testCase "not unload when not prepared for unloading" (fun () ->
                 let notUnloadingTranports =
-                    {
+                    { world with
                         StockedCargos = Map.ofList []
                         Transports = [
                             Truck WaitingAt Factory

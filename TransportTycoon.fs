@@ -12,13 +12,31 @@ type Position =
 type Transport =
     | Truck
     | Boat
-type World = {
-    StockedCargos: Map<Location, Location list>
-    Transports: (Transport * Position) list
-}
 type Hours = int
 type Leg = Leg of from:Location * to':Location * Hours
 type Path = Path of Leg list
+
+type Event =
+    | Departed of EventData * destination:Location
+    | Arrived of EventData
+and EventData = {
+    Time: Hours
+    //TransportId: int
+    kind: Transport
+    Location: Location
+    Cargo: Cargo
+}
+and Cargo = {
+    //CargoId: int
+    Destination: Location
+    //Origin: Location
+}
+
+type World = {
+    StockedCargos: Map<Location, Location list>
+    Transports: (Transport * Position) list
+    History: Event list
+}
 
 let Truck position positionData = Truck, position positionData
 let Boat position positionData = Boat, position positionData
@@ -102,5 +120,6 @@ let rec private runUntilFulfilling (request: Location list) iteration world =
 
 let computeHowLongItTakesToDeliver cargosRequest withTransports =
     { Transports = withTransports
-      StockedCargos = Map.ofList [(Factory, cargosRequest)] }
+      StockedCargos = Map.ofList [(Factory, cargosRequest)]
+      History = [] }
     |> runUntilFulfilling cargosRequest 0
