@@ -135,5 +135,16 @@ let should =
                                 ]
                             } @>
             )
+            testCase "not unload when not prepared for unloading" (fun () ->
+                let notUnloadingTranports =
+                    {
+                        StockedCargos = Map.ofList []
+                        Transports = [
+                            Truck WaitingAt Factory
+                            Boat InTransitTo (Port, None, 4)
+                        ]
+                    }
+                test <@ unload notUnloadingTranports = notUnloadingTranports @>
+            )
         ]
     ]

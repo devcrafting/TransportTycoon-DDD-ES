@@ -87,6 +87,7 @@ let unload world =
                     let newStock = destination :: (stockedCargos |> Map.tryFind location |> Option.defaultValue [] |> List.rev)
                     stockedCargos |> Map.add location newStock,
                     goBackFrom destination location |> InTransitTo
+                | _ -> stockedCargos, position                
             stockedCargos, (transport, newPosition)::transports) (world.StockedCargos, [])
     { world with Transports = transports |> List.rev; StockedCargos = stockedCargos }            
 
