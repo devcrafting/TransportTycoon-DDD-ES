@@ -8,23 +8,24 @@ open TransportTycoon
 let should =
     testList "All tests" [
         testList "Compute how long it takes to deliver should" [
+            let withTransports = [ Truck WaitingAt Factory; Truck WaitingAt Factory; Boat WaitingAt Port ]
             testCase "return 0 when no cargos" (fun () ->
-                test <@ computeHowLongItTakesToDeliver [] = 0 @>
+                test <@ computeHowLongItTakesToDeliver [] withTransports = 0 @>
             )
             testCase "return 5 when one cargo A" (fun () ->
-                test <@ computeHowLongItTakesToDeliver [WarehouseA] = 5 @>
+                test <@ computeHowLongItTakesToDeliver [WarehouseA] withTransports = 5 @>
             )
             testCase "return 5 when one cargo AB" (fun () ->
-                test <@ computeHowLongItTakesToDeliver [WarehouseA; WarehouseB] = 5 @>
+                test <@ computeHowLongItTakesToDeliver [WarehouseA; WarehouseB] withTransports = 5 @>
             )
             testCase "return 5 when one cargo BB" (fun () ->
-                test <@ computeHowLongItTakesToDeliver [WarehouseB; WarehouseB] = 5 @>
+                test <@ computeHowLongItTakesToDeliver [WarehouseB; WarehouseB] withTransports = 5 @>
             )
             testCase "return 7 when one cargo ABB" (fun () ->
-                test <@ computeHowLongItTakesToDeliver [WarehouseA; WarehouseB; WarehouseB] = 7 @>
+                test <@ computeHowLongItTakesToDeliver [WarehouseA; WarehouseB; WarehouseB] withTransports = 7 @>
             )
             testCase "return 13 when one cargo AAB" (fun () ->
-                test <@ computeHowLongItTakesToDeliver [WarehouseA; WarehouseA; WarehouseB] = 13 @>
+                test <@ computeHowLongItTakesToDeliver [WarehouseA; WarehouseA; WarehouseB] withTransports = 13 @>
             )
         ]
 

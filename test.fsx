@@ -47,3 +47,4 @@ stateAfter3Hours |> spend1Hour = stateAfter4Hours
 stateAfter4Hours |> spend1Hour = stateAfter5Hours
 
 computeHowLongItTakesToDeliver [ WarehouseA ]
+    [ Truck WaitingAt Factory; Truck WaitingAt Factory; Boat WaitingAt Port ]
