@@ -47,17 +47,17 @@ let should =
                                     Boat InTransitTo (WarehouseA, Some WarehouseA, 4)
                                 ]
                                 History = [
-                                    Departed (Port, {
+                                    DepartedTo (Port, {
                                         Time = currentTime
                                         Kind = Transport.Truck
                                         Location = Factory
-                                        Cargo = { Destination = WarehouseA }
+                                        Cargo = Some { Destination = WarehouseA }
                                     })
-                                    Departed (WarehouseA, {
+                                    DepartedTo (WarehouseA, {
                                         Time = currentTime
                                         Kind = Transport.Boat
                                         Location = Port
-                                        Cargo = { Destination = WarehouseA }
+                                        Cargo = Some { Destination = WarehouseA }
                                     })
                                 ]
                             } @>
@@ -159,12 +159,27 @@ let should =
                             Boat ArrivingIn (WarehouseA, WarehouseA)
                         ]
                     }
-                test <@ unload unloadingTranports = 
-                            { world with
+                let currentTime = System.Random().Next()
+                test <@ unload currentTime unloadingTranports = 
+                            {
                                 StockedCargos = Map.ofList [(WarehouseA, [WarehouseA]); (WarehouseB, [WarehouseB])]
                                 Transports = [
                                     Truck InTransitTo (Factory, None, 5)
                                     Boat InTransitTo (Port, None, 4)
+                                ]
+                                History = [
+                                    DepartedTo (Factory, {
+                                        Time = currentTime
+                                        Kind = Transport.Truck
+                                        Location = WarehouseB
+                                        Cargo = None
+                                    })
+                                    DepartedTo (Port, {
+                                        Time = currentTime
+                                        Kind = Transport.Boat
+                                        Location = WarehouseA
+                                        Cargo = None
+                                    })
                                 ]
                             } @>
             )
@@ -177,7 +192,7 @@ let should =
                             Boat InTransitTo (Port, None, 4)
                         ]
                     }
-                test <@ unload notUnloadingTranports = notUnloadingTranports @>
+                test <@ unload 0 notUnloadingTranports = notUnloadingTranports @>
             )
         ]
     ]

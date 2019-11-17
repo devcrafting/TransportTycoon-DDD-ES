@@ -17,14 +17,14 @@ type Leg = Leg of from:Location * to':Location * Hours
 type Path = Path of Leg list
 
 type Event =
-    | Departed of destination:Location * EventData
-    | Arrived of EventData
+    | DepartedTo of destination:Location * EventData
+    | ArrivedIn of EventData
 and EventData = {
     Time: Hours
     //TransportId: int
     Kind: Transport
     Location: Location
-    Cargo: Cargo
+    Cargo: Cargo option
 }
 and Cargo = {
     //CargoId: int
@@ -58,7 +58,7 @@ let private pathTo destination fromLocation =
 let private goBackFrom destination fromLocation =
     let (Path path) = paths |> Map.find destination
     let (Leg (from, _, hours)) = path |> List.find (function Leg (_, to', _) -> to' = fromLocation)
-    from, None, hours
+    from, hours
 
 let private tryLoading transport fromRemainingStockedCargos position currentTime events =
     match position with
@@ -70,12 +70,12 @@ let private tryLoading transport fromRemainingStockedCargos position currentTime
                 |> Map.add location remainingCargos
             let nextLocation, cargo, remainingHours = pathTo firstCargoDestination location
             remainingCargos,InTransitTo (nextLocation, cargo, remainingHours),
-                events @ [Departed (
+                events @ [DepartedTo (
                             nextLocation,
                             { Time = currentTime
                               Kind = transport
                               Location = location
-                              Cargo = { Destination = firstCargoDestination } })]
+                              Cargo = Some { Destination = firstCargoDestination } })]
         | _ -> fromRemainingStockedCargos, position, events
     | _ -> fromRemainingStockedCargos, position, events
 
@@ -108,21 +108,31 @@ let move world =
             | _ -> position)
     { world with Transports = transports}            
 
-let unload world =
-    let stockedCargos, transports =
+let unload currentTime world =
+    let stockedCargos, transports, events =
         world.Transports
-        |> List.fold (fun (stockedCargos, transports) (transport, position) ->
-            let stockedCargos, newPosition =
+        |> List.fold (fun (stockedCargos, transports, events) (transport, position) ->
+            let stockedCargos, newPosition, events =
                 match position with
                 | ArrivingIn (location, destination) ->
                     let newStock = destination :: (stockedCargos |> Map.tryFind location |> Option.defaultValue [] |> List.rev)
+                    let nextLocation, remainingHours = goBackFrom destination location
                     stockedCargos |> Map.add location newStock,
-                    goBackFrom destination location |> InTransitTo
-                | _ -> stockedCargos, position                
-            stockedCargos, (transport, newPosition)::transports) (world.StockedCargos, [])
-    { world with Transports = transports |> List.rev; StockedCargos = stockedCargos }            
+                        InTransitTo (nextLocation, None, remainingHours),
+                        events @ [ DepartedTo (
+                                    nextLocation,
+                                    { Time = currentTime
+                                      Kind = transport
+                                      Location = location
+                                      Cargo = None } ) ]
+                | _ -> stockedCargos, position, events                
+            stockedCargos, (transport, newPosition)::transports, events) (world.StockedCargos, [], [])
+    { world with
+        Transports = transports |> List.rev;
+        StockedCargos = stockedCargos
+        History = world.History @ events }            
 
-let spend1Hour currentTime = (load currentTime) >> move >> unload
+let spend1Hour currentTime = (load currentTime) >> move >> (unload (currentTime + 1))
 
 let rec private runUntilFulfilling (request: Location list) currentTime world =
     if world.StockedCargos |> Map.filter (fun _ stock -> stock |> List.isEmpty |> not) |> Map.toList = (request |> List.groupBy id) then
