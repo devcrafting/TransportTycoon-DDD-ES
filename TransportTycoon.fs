@@ -8,7 +8,7 @@ type Location =
 type Position =
     | WaitingAt of Location
     | InTransitTo of Location * cargoDestination:Location option * remainingHours:int
-    | UnloadingAt of Location * cargoDestination:Location
+    | ArrivingIn of Location * cargoDestination:Location
 type Transport =
     | Truck
     | Boat
@@ -100,7 +100,7 @@ let move world =
             transport,
             match position with
             | InTransitTo (nextLocation, Some destination, 1) ->
-                UnloadingAt (nextLocation, destination)
+                ArrivingIn (nextLocation, destination)
             | InTransitTo (nextLocation, None, 1) ->
                 WaitingAt nextLocation
             | InTransitTo (nextLocation, destination, hours) ->
@@ -114,7 +114,7 @@ let unload world =
         |> List.fold (fun (stockedCargos, transports) (transport, position) ->
             let stockedCargos, newPosition =
                 match position with
-                | UnloadingAt (location, destination) ->
+                | ArrivingIn (location, destination) ->
                     let newStock = destination :: (stockedCargos |> Map.tryFind location |> Option.defaultValue [] |> List.rev)
                     stockedCargos |> Map.add location newStock,
                     goBackFrom destination location |> InTransitTo

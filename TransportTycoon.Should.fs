@@ -113,8 +113,8 @@ let should =
                             { world with
                                 StockedCargos = Map.ofList [(Factory, []); (Port, [])]
                                 Transports = [
-                                    Truck UnloadingAt (Port, WarehouseA)
-                                    Boat UnloadingAt (WarehouseA, WarehouseA)
+                                    Truck ArrivingIn (Port, WarehouseA)
+                                    Boat ArrivingIn (WarehouseA, WarehouseA)
                                 ]
                             } @>
             )
@@ -142,7 +142,7 @@ let should =
                         StockedCargos = Map.ofList [(Factory, []); (Port, [])]
                         Transports = [
                             Truck WaitingAt Factory
-                            Boat UnloadingAt (Port, WarehouseA)
+                            Boat ArrivingIn (Port, WarehouseA)
                         ]
                     }
                 test <@ move notInTransitTransports = notInTransitTransports @>
@@ -155,8 +155,8 @@ let should =
                     { world with
                         StockedCargos = Map.ofList []
                         Transports = [
-                            Truck UnloadingAt (WarehouseB, WarehouseB)
-                            Boat UnloadingAt (WarehouseA, WarehouseA)
+                            Truck ArrivingIn (WarehouseB, WarehouseB)
+                            Boat ArrivingIn (WarehouseA, WarehouseA)
                         ]
                     }
                 test <@ unload unloadingTranports = 

@@ -26,7 +26,7 @@ let stateAfter2Hours = { world with
 let stockedCargosAfterLoadingLastCargo = stockedCargosAfterLoadingBoat |> Map.remove Factory
 let stateAfter3Hours = { world with
     StockedCargos = stockedCargosAfterLoadingLastCargo
-    Transports = [ Truck WaitingAt Factory (*UnloadingAt (WarehouseA, Port)*); Truck InTransitTo (WarehouseB, Some WarehouseB, 2); Boat InTransitTo (WarehouseA, Some WarehouseA, 2) ]
+    Transports = [ Truck WaitingAt Factory (*ArrivingIn (WarehouseA, Port)*); Truck InTransitTo (WarehouseB, Some WarehouseB, 2); Boat InTransitTo (WarehouseA, Some WarehouseA, 2) ]
 }
 let stockedCargosAfterBufferInPort = stockedCargosAfterLoadingLastCargo// |> Map.add Port [WarehouseA]
 let stateAfter4Hours = { world with
