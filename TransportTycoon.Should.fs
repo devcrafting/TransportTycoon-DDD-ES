@@ -10,22 +10,22 @@ let should =
         testList "Compute how long it takes to deliver should" [
             let withTransports = [ Truck WaitingAt Factory; Truck WaitingAt Factory; Boat WaitingAt Port ]
             testCase "return 0 when no cargos" (fun () ->
-                test <@ computeHowLongItTakesToDeliver [] withTransports = 0 @>
+                test <@ computeHowLongItTakesToDeliver [] withTransports |> fst = 0 @>
             )
             testCase "return 5 when one cargo A" (fun () ->
-                test <@ computeHowLongItTakesToDeliver [WarehouseA] withTransports = 5 @>
+                test <@ computeHowLongItTakesToDeliver [WarehouseA] withTransports |> fst = 5 @>
             )
             testCase "return 5 when one cargo AB" (fun () ->
-                test <@ computeHowLongItTakesToDeliver [WarehouseA; WarehouseB] withTransports = 5 @>
+                test <@ computeHowLongItTakesToDeliver [WarehouseA; WarehouseB] withTransports |> fst = 5 @>
             )
             testCase "return 5 when one cargo BB" (fun () ->
-                test <@ computeHowLongItTakesToDeliver [WarehouseB; WarehouseB] withTransports = 5 @>
+                test <@ computeHowLongItTakesToDeliver [WarehouseB; WarehouseB] withTransports |> fst = 5 @>
             )
             testCase "return 7 when one cargo ABB" (fun () ->
-                test <@ computeHowLongItTakesToDeliver [WarehouseA; WarehouseB; WarehouseB] withTransports = 7 @>
+                test <@ computeHowLongItTakesToDeliver [WarehouseA; WarehouseB; WarehouseB] withTransports |> fst = 7 @>
             )
             testCase "return 13 when one cargo AAB" (fun () ->
-                test <@ computeHowLongItTakesToDeliver [WarehouseA; WarehouseA; WarehouseB] withTransports = 13 @>
+                test <@ computeHowLongItTakesToDeliver [WarehouseA; WarehouseA; WarehouseB] withTransports |> fst = 13 @>
             )
         ]
 
@@ -39,11 +39,25 @@ let should =
                         Transports = [ Truck WaitingAt Factory; Boat WaitingAt Port ]
                     }
                 test <@ load waitingTransportWithCargoStockedAtWaitingLocation = 
-                            { world with
+                            {
                                 StockedCargos = Map.ofList [(Factory, []); (Port, [])]
                                 Transports = [
                                     Truck InTransitTo (Port, Some WarehouseA, 1)
                                     Boat InTransitTo (WarehouseA, Some WarehouseA, 4)
+                                ]
+                                History = [
+                                    Departed (Port, {
+                                        Time = 0
+                                        Kind = Transport.Truck
+                                        Location = Factory
+                                        Cargo = { Destination = WarehouseA }
+                                    })
+                                    Departed (WarehouseA, {
+                                        Time = 0
+                                        Kind = Transport.Boat
+                                        Location = Port
+                                        Cargo = { Destination = WarehouseA }
+                                    })
                                 ]
                             } @>
             )

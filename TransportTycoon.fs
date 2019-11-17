@@ -17,12 +17,12 @@ type Leg = Leg of from:Location * to':Location * Hours
 type Path = Path of Leg list
 
 type Event =
-    | Departed of EventData * destination:Location
+    | Departed of destination:Location * EventData
     | Arrived of EventData
 and EventData = {
     Time: Hours
     //TransportId: int
-    kind: Transport
+    Kind: Transport
     Location: Location
     Cargo: Cargo
 }
@@ -60,25 +60,38 @@ let private goBackFrom destination fromLocation =
     let (Leg (from, _, hours)) = path |> List.find (function Leg (_, to', _) -> to' = fromLocation)
     from, None, hours
 
-let private tryLoading fromRemainingStockedCargos position =
+let private tryLoading transport fromRemainingStockedCargos position events =
     match position with
     | WaitingAt location ->
         match fromRemainingStockedCargos |> Map.tryFind location with
         | Some (firstCargoDestination::remainingCargos) ->
-            fromRemainingStockedCargos |> Map.remove location
-            |> Map.add location remainingCargos, pathTo firstCargoDestination location |> InTransitTo
-        | _ -> fromRemainingStockedCargos, position
-    | _ -> fromRemainingStockedCargos, position
+            let remainingCargos =
+                fromRemainingStockedCargos |> Map.remove location
+                |> Map.add location remainingCargos
+            let nextLocation, cargo, remainingHours = pathTo firstCargoDestination location
+            remainingCargos,InTransitTo (nextLocation, cargo, remainingHours),
+                events @ [Departed (
+                            nextLocation,
+                            { Time = 0
+                              Kind = transport
+                              Location = location
+                              Cargo = { Destination = firstCargoDestination } })]
+        | _ -> fromRemainingStockedCargos, position, events
+    | _ -> fromRemainingStockedCargos, position, events
 
 let load world =
-    let remainingStockedCargos, transports =
+    let remainingStockedCargos, transports, events =
         world.Transports
-        |> List.fold (fun (remainingStockedCargos, transports) (transport, position) ->
-            let remainingStockedCargos, newPosition = tryLoading remainingStockedCargos position
-            remainingStockedCargos, (transport, newPosition) :: transports) (world.StockedCargos, [])
+        |> List.fold (fun (remainingStockedCargos, transports, events) (transport, position) ->
+            let remainingStockedCargos, newPosition, events =
+                tryLoading transport remainingStockedCargos position events
+            remainingStockedCargos,
+                (transport, newPosition) :: transports,
+                events) (world.StockedCargos, [], [])
     { world with
         StockedCargos = remainingStockedCargos
-        Transports = transports |> List.rev }
+        Transports = transports |> List.rev
+        History = world.History @ events }
 
 let move world =
     let transports =
@@ -113,7 +126,7 @@ let spend1Hour = load >> move >> unload
 
 let rec private runUntilFulfilling (request: Location list) iteration world =
     if world.StockedCargos |> Map.filter (fun _ stock -> stock |> List.isEmpty |> not) |> Map.toList = (request |> List.groupBy id) then
-        iteration
+        iteration, world
     else
         let nextWorld = world |> spend1Hour
         runUntilFulfilling request (iteration + 1) nextWorld
