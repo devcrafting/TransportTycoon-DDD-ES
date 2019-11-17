@@ -115,4 +115,25 @@ let should =
                 test <@ move notInTransitTransports = notInTransitTransports @>
             )
         ]
+        
+        testList "Unload should" [
+            testCase "unload cargo in location stock and go back without cargos" (fun () ->
+                let unloadingTranports =
+                    {
+                        StockedCargos = Map.ofList []
+                        Transports = [
+                            Truck UnloadingAt (WarehouseB, WarehouseB)
+                            Boat UnloadingAt (WarehouseA, WarehouseA)
+                        ]
+                    }
+                test <@ unload unloadingTranports = 
+                            {
+                                StockedCargos = Map.ofList [(WarehouseA, [WarehouseA]); (WarehouseB, [WarehouseB])]
+                                Transports = [
+                                    Truck InTransitTo (Factory, None, 5)
+                                    Boat InTransitTo (Port, None, 4)
+                                ]
+                            } @>
+            )
+        ]
     ]

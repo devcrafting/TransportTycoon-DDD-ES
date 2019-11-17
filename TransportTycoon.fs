@@ -26,12 +26,18 @@ let Boat position positionData = Boat, position positionData
 let leg fromLocation toLocation hours = Leg (fromLocation, toLocation, hours)
 let paths = Map.ofList [
     (WarehouseA, Path [leg Factory Port 1; leg Port WarehouseA 4])
+    (WarehouseB, Path [leg Factory WarehouseB 5])
 ]
 
 let private pathTo destination fromLocation =
     let (Path path) = paths |> Map.find destination
     let (Leg (_, to', hours)) = path |> List.find (function Leg (from, _, _) -> from = fromLocation)
     to', Some destination, hours
+
+let private goBackFrom destination fromLocation =
+    let (Path path) = paths |> Map.find destination
+    let (Leg (from, _, hours)) = path |> List.find (function Leg (_, to', _) -> to' = fromLocation)
+    from, None, hours
 
 let private tryLoading fromRemainingStockedCargos position =
     match position with
@@ -68,7 +74,18 @@ let move world =
             | _ -> position)
     { world with Transports = transports}            
 
-let unload world = world
+let unload world =
+    let stockedCargos, transports =
+        world.Transports
+        |> List.fold (fun (stockedCargos, transports) (transport, position) ->
+            let stockedCargos, newPosition =
+                match position with
+                | UnloadingAt (location, destination) ->
+                    let newStock = destination :: (stockedCargos |> Map.tryFind location |> Option.defaultValue [] |> List.rev)
+                    stockedCargos |> Map.add location newStock,
+                    goBackFrom destination location |> InTransitTo
+            stockedCargos, (transport, newPosition)::transports) (world.StockedCargos, [])
+    { world with Transports = transports |> List.rev; StockedCargos = stockedCargos }            
 
 let spend1Hour = load >> move >> unload
 
