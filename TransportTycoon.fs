@@ -93,20 +93,28 @@ let load currentTime world =
         Transports = transports |> List.rev
         History = world.History @ events }
 
-let move world =
-    let transports =
+let move currentTime world =
+    let transports, events =
         world.Transports
         |> List.map (fun (transport, position) ->
-            transport,
             match position with
             | InTransitTo (nextLocation, Some destination, 1) ->
-                ArrivingIn (nextLocation, destination)
+                (transport, ArrivingIn (nextLocation, destination)),
+                    ArrivedIn {
+                        Time = currentTime
+                        Kind = transport
+                        Location = nextLocation
+                        Cargo = Some { Destination = destination }
+                    } |> Some
             | InTransitTo (nextLocation, None, 1) ->
-                WaitingAt nextLocation
+                (transport,WaitingAt nextLocation), None
             | InTransitTo (nextLocation, destination, hours) ->
-                InTransitTo (nextLocation, destination, hours - 1)
-            | _ -> position)
-    { world with Transports = transports}            
+                (transport, InTransitTo (nextLocation, destination, hours - 1)), None
+            | _ -> (transport, position), None)
+        |> List.unzip        
+    { world with
+        Transports = transports
+        History = world.History @ (events |> List.choose id) }            
 
 let unload currentTime world =
     let stockedCargos, transports, events =
@@ -132,7 +140,7 @@ let unload currentTime world =
         StockedCargos = stockedCargos
         History = world.History @ events }            
 
-let spend1Hour currentTime = (load currentTime) >> move >> (unload (currentTime + 1))
+let spend1Hour currentTime = (load currentTime) >> (move (currentTime + 1)) >> (unload (currentTime + 1))
 
 let rec private runUntilFulfilling (request: Location list) currentTime world =
     if world.StockedCargos |> Map.filter (fun _ stock -> stock |> List.isEmpty |> not) |> Map.toList = (request |> List.groupBy id) then

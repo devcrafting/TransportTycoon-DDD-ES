@@ -91,7 +91,7 @@ let should =
                             Boat InTransitTo (WarehouseA, Some WarehouseA, 4)
                         ]
                     }
-                test <@ move inTransitTransports = 
+                test <@ move 0 inTransitTransports = 
                             { world with
                                 StockedCargos = Map.ofList [(Factory, []); (Port, [])]
                                 Transports = [
@@ -100,7 +100,7 @@ let should =
                                 ]
                             } @>
             )
-            testCase "be unloading when in transit with a cargo and only 1 remaining hour" (fun () ->
+            testCase "be arriving when in transit with a cargo and only 1 remaining hour" (fun () ->
                 let inTransitTransports =
                     { world with
                         StockedCargos = Map.ofList [(Factory, []); (Port, [])]
@@ -109,12 +109,27 @@ let should =
                             Boat InTransitTo (WarehouseA, Some WarehouseA, 1)
                         ]
                     }
-                test <@ move inTransitTransports = 
-                            { world with
+                let currentTime = System.Random().Next()
+                test <@ move currentTime inTransitTransports = 
+                            {
                                 StockedCargos = Map.ofList [(Factory, []); (Port, [])]
                                 Transports = [
                                     Truck ArrivingIn (Port, WarehouseA)
                                     Boat ArrivingIn (WarehouseA, WarehouseA)
+                                ]
+                                History = [
+                                    ArrivedIn {
+                                        Time = currentTime
+                                        Kind = Transport.Truck
+                                        Location = Port
+                                        Cargo = Some { Destination = WarehouseA }
+                                    }
+                                    ArrivedIn {
+                                        Time = currentTime
+                                        Kind = Transport.Boat
+                                        Location = WarehouseA
+                                        Cargo = Some { Destination = WarehouseA }
+                                    }
                                 ]
                             } @>
             )
@@ -127,7 +142,7 @@ let should =
                             Boat InTransitTo (Port, None, 1)
                         ]
                     }
-                test <@ move inTransitTransports = 
+                test <@ move 0 inTransitTransports = 
                             { world with
                                 StockedCargos = Map.ofList [(Factory, []); (Port, [])]
                                 Transports = [
@@ -145,13 +160,13 @@ let should =
                             Boat ArrivingIn (Port, WarehouseA)
                         ]
                     }
-                test <@ move notInTransitTransports = notInTransitTransports @>
+                test <@ move 0 notInTransitTransports = notInTransitTransports @>
             )
         ]
         
         testList "Unload should" [
             testCase "unload cargo in location stock and go back without cargos" (fun () ->
-                let unloadingTranports =
+                let arrivingTranports =
                     { world with
                         StockedCargos = Map.ofList []
                         Transports = [
@@ -160,7 +175,7 @@ let should =
                         ]
                     }
                 let currentTime = System.Random().Next()
-                test <@ unload currentTime unloadingTranports = 
+                test <@ unload currentTime arrivingTranports = 
                             {
                                 StockedCargos = Map.ofList [(WarehouseA, [WarehouseA]); (WarehouseB, [WarehouseB])]
                                 Transports = [
@@ -183,8 +198,8 @@ let should =
                                 ]
                             } @>
             )
-            testCase "not unload when not prepared for unloading" (fun () ->
-                let notUnloadingTranports =
+            testCase "not unload when not arriving for unloading" (fun () ->
+                let notArrivingTranports =
                     { world with
                         StockedCargos = Map.ofList []
                         Transports = [
@@ -192,7 +207,7 @@ let should =
                             Boat InTransitTo (Port, None, 4)
                         ]
                     }
-                test <@ unload 0 notUnloadingTranports = notUnloadingTranports @>
+                test <@ unload 0 notArrivingTranports = notArrivingTranports @>
             )
         ]
     ]
