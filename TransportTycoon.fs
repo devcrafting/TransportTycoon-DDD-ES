@@ -107,7 +107,13 @@ let move currentTime world =
                         Cargo = Some { Destination = destination }
                     } |> Some
             | InTransitTo (nextLocation, None, 1) ->
-                (transport,WaitingAt nextLocation), None
+                (transport,WaitingAt nextLocation),
+                    ArrivedIn {
+                        Time = currentTime
+                        Kind = transport
+                        Location = nextLocation
+                        Cargo = None
+                    } |> Some
             | InTransitTo (nextLocation, destination, hours) ->
                 (transport, InTransitTo (nextLocation, destination, hours - 1)), None
             | _ -> (transport, position), None)

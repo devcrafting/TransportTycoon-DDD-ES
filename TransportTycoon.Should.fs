@@ -142,12 +142,27 @@ let should =
                             Boat InTransitTo (Port, None, 1)
                         ]
                     }
-                test <@ move 0 inTransitTransports = 
-                            { world with
+                let currentTime = System.Random().Next()
+                test <@ move currentTime inTransitTransports = 
+                            {
                                 StockedCargos = Map.ofList [(Factory, []); (Port, [])]
                                 Transports = [
                                     Truck WaitingAt Factory
                                     Boat WaitingAt Port
+                                ]
+                                History = [
+                                    ArrivedIn {
+                                        Time = currentTime
+                                        Kind = Transport.Truck
+                                        Location = Factory
+                                        Cargo = None
+                                    }
+                                    ArrivedIn {
+                                        Time = currentTime
+                                        Kind = Transport.Boat
+                                        Location = Port
+                                        Cargo = None
+                                    }
                                 ]
                             } @>
             )
