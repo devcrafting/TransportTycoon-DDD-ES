@@ -19,3 +19,13 @@ So I tried first defining types that define the initial state of the world with 
 The main idea was that I did not intend to describe the world the best I can to map with reality. Writing examples of states at different point in time helped me to identify what was useful in the model of the world. For example, questions that arise discussing with Mathias were: Should we make Cargo know where it is ? Isn't it an entity rather than a value object ? What would be the boundaries between objects/aggregates if we had a larger network ?
 
 In my implementation, I finally decided to do the simplest model I can, where Cargo are in fact just a destination Location, being stocked in Location, then loaded in waiting Tranport having a Position, Tranport moving around between Location, unloading Cargo when arriving and going back immediately. Each hour is then a try to sequentially load/move/unload each Transport (sharing stocks).
+
+## Exercice 2 - logs that look like an event stream ;)
+
+NB: I did Exercice 1 while Exercice 2 was revealed, but I promise I did not change my design after having a look at Exercice 2 ;). My first attempt was done trying to avoid Event Sourcing, but considering the functional way of designing types, we often have a function that take the previous state (encoded with state) and return the new one. This lead to a solution where adding events is not hard, instead of State -> Command -> State, you could have an intermediate `State -> Command -> Events` ("decide" function) + `Events -> State` ("project" function). I haven't been up to this solution for now: the two functions are still mixed (State -> Command -> State + accumulate Events).
+
+So it was quite easy to add events, each branch of pattern matching from my load/move/unload functions. I just added an History to my world to get the events of the domain.
+
+Note I had to add id for Transport, but did not really need to add id on Cargo for now (but having source hard coded).
+
+I kept separated the log writing of my events from their domain definition.
