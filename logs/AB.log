@@ -1,0 +1,10 @@
+{"event": "DEPART", "time": 0, "transport_id": 0, "kind": "TRUCK 0", "location": "FACTORY", "destination": "PORT" ,"cargo": [{ "cargo_id": 0, "destination": "A", "origin": "FACTORY"}]}
+{"event": "DEPART", "time": 0, "transport_id": 1, "kind": "TRUCK 1", "location": "FACTORY", "destination": "WAREHOUSEB" ,"cargo": [{ "cargo_id": 0, "destination": "B", "origin": "FACTORY"}]}
+{"event": "ARRIVE", "time": 1, "transport_id": 0, "kind": "TRUCK 0", "location": "PORT","cargo": [{ "cargo_id": 0, "destination": "A", "origin": "FACTORY"}]}
+{"event": "DEPART", "time": 1, "transport_id": 0, "kind": "TRUCK 0", "location": "PORT", "destination": "FACTORY" }   
+{"event": "DEPART", "time": 1, "transport_id": 0, "kind": "BOAT 0", "location": "PORT", "destination": "WAREHOUSEA" ,"cargo": [{ "cargo_id": 0, "destination": "A", "origin": "FACTORY"}]}
+{"event": "ARRIVE", "time": 2, "transport_id": 0, "kind": "TRUCK 0", "location": "FACTORY"}
+{"event": "ARRIVE", "time": 5, "transport_id": 1, "kind": "TRUCK 1", "location": "B","cargo": [{ "cargo_id": 0, "destination": "B", "origin": "FACTORY"}]}
+{"event": "ARRIVE", "time": 5, "transport_id": 0, "kind": "BOAT 0", "location": "A","cargo": [{ "cargo_id": 0, "destination": "A", "origin": "FACTORY"}]}
+{"event": "DEPART", "time": 5, "transport_id": 1, "kind": "TRUCK 1", "location": "B", "destination": "FACTORY" }      
+{"event": "DEPART", "time": 5, "transport_id": 0, "kind": "BOAT 0", "location": "A", "destination": "PORT" }
