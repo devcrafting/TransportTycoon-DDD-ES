@@ -1,0 +1,833 @@
+{
+ "displayTimeUnit": "ms",
+ "traceEvents": [
+  {
+   "ts": 0,
+   "pid": "TRUCK 0:0",
+   "tid": "TRUCK 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [
+     "CARGO:FACTORY_A_0"
+    ],
+    "transport": "TRUCK 0:0"
+   },
+   "ph": "B",
+   "name": "FACTORY-PORT"
+  },
+  {
+   "ts": 0,
+   "pid": "TRUCK 1:1",
+   "tid": "TRUCK 1:1",
+   "cat": "ddd",
+   "args": {
+    "cargo": [
+     "CARGO:FACTORY_B_0"
+    ],
+    "transport": "TRUCK 1:1"
+   },
+   "ph": "B",
+   "name": "FACTORY-WAREHOUSEB"
+  },
+  {
+   "ts": 1,
+   "pid": "TRUCK 0:0",
+   "tid": "TRUCK 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [
+     "CARGO:FACTORY_A_0"
+    ],
+    "transport": "TRUCK 0:0"
+   },
+   "ph": "E"
+  },
+  {
+   "ts": 1,
+   "pid": "TRUCK 0:0",
+   "tid": "TRUCK 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [],
+    "transport": "TRUCK 0:0"
+   },
+   "ph": "B",
+   "name": "PORT-FACTORY"
+  },
+  {
+   "ts": 1,
+   "pid": "BOAT 0:0",
+   "tid": "BOAT 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [
+     "CARGO:FACTORY_A_0"
+    ],
+    "transport": "BOAT 0:0"
+   },
+   "ph": "B",
+   "name": "PORT-WAREHOUSEA"
+  },
+  {
+   "ts": 2,
+   "pid": "TRUCK 0:0",
+   "tid": "TRUCK 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [],
+    "transport": "TRUCK 0:0"
+   },
+   "ph": "E"
+  },
+  {
+   "ts": 2,
+   "pid": "TRUCK 0:0",
+   "tid": "TRUCK 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [
+     "CARGO:FACTORY_B_0"
+    ],
+    "transport": "TRUCK 0:0"
+   },
+   "ph": "B",
+   "name": "FACTORY-WAREHOUSEB"
+  },
+  {
+   "ts": 5,
+   "pid": "TRUCK 1:1",
+   "tid": "TRUCK 1:1",
+   "cat": "ddd",
+   "args": {
+    "cargo": [
+     "CARGO:FACTORY_B_0"
+    ],
+    "transport": "TRUCK 1:1"
+   },
+   "ph": "E"
+  },
+  {
+   "ts": 5,
+   "pid": "BOAT 0:0",
+   "tid": "BOAT 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [
+     "CARGO:FACTORY_A_0"
+    ],
+    "transport": "BOAT 0:0"
+   },
+   "ph": "E"
+  },
+  {
+   "ts": 5,
+   "pid": "TRUCK 1:1",
+   "tid": "TRUCK 1:1",
+   "cat": "ddd",
+   "args": {
+    "cargo": [],
+    "transport": "TRUCK 1:1"
+   },
+   "ph": "B",
+   "name": "B-FACTORY"
+  },
+  {
+   "ts": 5,
+   "pid": "BOAT 0:0",
+   "tid": "BOAT 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [],
+    "transport": "BOAT 0:0"
+   },
+   "ph": "B",
+   "name": "A-PORT"
+  },
+  {
+   "ts": 7,
+   "pid": "TRUCK 0:0",
+   "tid": "TRUCK 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [
+     "CARGO:FACTORY_B_0"
+    ],
+    "transport": "TRUCK 0:0"
+   },
+   "ph": "E"
+  },
+  {
+   "ts": 7,
+   "pid": "TRUCK 0:0",
+   "tid": "TRUCK 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [],
+    "transport": "TRUCK 0:0"
+   },
+   "ph": "B",
+   "name": "B-FACTORY"
+  },
+  {
+   "ts": 9,
+   "pid": "BOAT 0:0",
+   "tid": "BOAT 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [],
+    "transport": "BOAT 0:0"
+   },
+   "ph": "E"
+  },
+  {
+   "ts": 10,
+   "pid": "TRUCK 1:1",
+   "tid": "TRUCK 1:1",
+   "cat": "ddd",
+   "args": {
+    "cargo": [],
+    "transport": "TRUCK 1:1"
+   },
+   "ph": "E"
+  },
+  {
+   "ts": 10,
+   "pid": "TRUCK 1:1",
+   "tid": "TRUCK 1:1",
+   "cat": "ddd",
+   "args": {
+    "cargo": [
+     "CARGO:FACTORY_B_0"
+    ],
+    "transport": "TRUCK 1:1"
+   },
+   "ph": "B",
+   "name": "FACTORY-WAREHOUSEB"
+  },
+  {
+   "ts": 12,
+   "pid": "TRUCK 0:0",
+   "tid": "TRUCK 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [],
+    "transport": "TRUCK 0:0"
+   },
+   "ph": "E"
+  },
+  {
+   "ts": 12,
+   "pid": "TRUCK 0:0",
+   "tid": "TRUCK 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [
+     "CARGO:FACTORY_A_0"
+    ],
+    "transport": "TRUCK 0:0"
+   },
+   "ph": "B",
+   "name": "FACTORY-PORT"
+  },
+  {
+   "ts": 13,
+   "pid": "TRUCK 0:0",
+   "tid": "TRUCK 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [
+     "CARGO:FACTORY_A_0"
+    ],
+    "transport": "TRUCK 0:0"
+   },
+   "ph": "E"
+  },
+  {
+   "ts": 13,
+   "pid": "TRUCK 0:0",
+   "tid": "TRUCK 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [],
+    "transport": "TRUCK 0:0"
+   },
+   "ph": "B",
+   "name": "PORT-FACTORY"
+  },
+  {
+   "ts": 13,
+   "pid": "BOAT 0:0",
+   "tid": "BOAT 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [
+     "CARGO:FACTORY_A_0"
+    ],
+    "transport": "BOAT 0:0"
+   },
+   "ph": "B",
+   "name": "PORT-WAREHOUSEA"
+  },
+  {
+   "ts": 14,
+   "pid": "TRUCK 0:0",
+   "tid": "TRUCK 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [],
+    "transport": "TRUCK 0:0"
+   },
+   "ph": "E"
+  },
+  {
+   "ts": 14,
+   "pid": "TRUCK 0:0",
+   "tid": "TRUCK 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [
+     "CARGO:FACTORY_B_0"
+    ],
+    "transport": "TRUCK 0:0"
+   },
+   "ph": "B",
+   "name": "FACTORY-WAREHOUSEB"
+  },
+  {
+   "ts": 15,
+   "pid": "TRUCK 1:1",
+   "tid": "TRUCK 1:1",
+   "cat": "ddd",
+   "args": {
+    "cargo": [
+     "CARGO:FACTORY_B_0"
+    ],
+    "transport": "TRUCK 1:1"
+   },
+   "ph": "E"
+  },
+  {
+   "ts": 15,
+   "pid": "TRUCK 1:1",
+   "tid": "TRUCK 1:1",
+   "cat": "ddd",
+   "args": {
+    "cargo": [],
+    "transport": "TRUCK 1:1"
+   },
+   "ph": "B",
+   "name": "B-FACTORY"
+  },
+  {
+   "ts": 17,
+   "pid": "BOAT 0:0",
+   "tid": "BOAT 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [
+     "CARGO:FACTORY_A_0"
+    ],
+    "transport": "BOAT 0:0"
+   },
+   "ph": "E"
+  },
+  {
+   "ts": 17,
+   "pid": "BOAT 0:0",
+   "tid": "BOAT 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [],
+    "transport": "BOAT 0:0"
+   },
+   "ph": "B",
+   "name": "A-PORT"
+  },
+  {
+   "ts": 19,
+   "pid": "TRUCK 0:0",
+   "tid": "TRUCK 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [
+     "CARGO:FACTORY_B_0"
+    ],
+    "transport": "TRUCK 0:0"
+   },
+   "ph": "E"
+  },
+  {
+   "ts": 19,
+   "pid": "TRUCK 0:0",
+   "tid": "TRUCK 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [],
+    "transport": "TRUCK 0:0"
+   },
+   "ph": "B",
+   "name": "B-FACTORY"
+  },
+  {
+   "ts": 20,
+   "pid": "TRUCK 1:1",
+   "tid": "TRUCK 1:1",
+   "cat": "ddd",
+   "args": {
+    "cargo": [],
+    "transport": "TRUCK 1:1"
+   },
+   "ph": "E"
+  },
+  {
+   "ts": 20,
+   "pid": "TRUCK 1:1",
+   "tid": "TRUCK 1:1",
+   "cat": "ddd",
+   "args": {
+    "cargo": [
+     "CARGO:FACTORY_A_0"
+    ],
+    "transport": "TRUCK 1:1"
+   },
+   "ph": "B",
+   "name": "FACTORY-PORT"
+  },
+  {
+   "ts": 21,
+   "pid": "TRUCK 1:1",
+   "tid": "TRUCK 1:1",
+   "cat": "ddd",
+   "args": {
+    "cargo": [
+     "CARGO:FACTORY_A_0"
+    ],
+    "transport": "TRUCK 1:1"
+   },
+   "ph": "E"
+  },
+  {
+   "ts": 21,
+   "pid": "BOAT 0:0",
+   "tid": "BOAT 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [],
+    "transport": "BOAT 0:0"
+   },
+   "ph": "E"
+  },
+  {
+   "ts": 21,
+   "pid": "TRUCK 1:1",
+   "tid": "TRUCK 1:1",
+   "cat": "ddd",
+   "args": {
+    "cargo": [],
+    "transport": "TRUCK 1:1"
+   },
+   "ph": "B",
+   "name": "PORT-FACTORY"
+  },
+  {
+   "ts": 21,
+   "pid": "BOAT 0:0",
+   "tid": "BOAT 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [
+     "CARGO:FACTORY_A_0"
+    ],
+    "transport": "BOAT 0:0"
+   },
+   "ph": "B",
+   "name": "PORT-WAREHOUSEA"
+  },
+  {
+   "ts": 22,
+   "pid": "TRUCK 1:1",
+   "tid": "TRUCK 1:1",
+   "cat": "ddd",
+   "args": {
+    "cargo": [],
+    "transport": "TRUCK 1:1"
+   },
+   "ph": "E"
+  },
+  {
+   "ts": 22,
+   "pid": "TRUCK 1:1",
+   "tid": "TRUCK 1:1",
+   "cat": "ddd",
+   "args": {
+    "cargo": [
+     "CARGO:FACTORY_A_0"
+    ],
+    "transport": "TRUCK 1:1"
+   },
+   "ph": "B",
+   "name": "FACTORY-PORT"
+  },
+  {
+   "ts": 23,
+   "pid": "TRUCK 1:1",
+   "tid": "TRUCK 1:1",
+   "cat": "ddd",
+   "args": {
+    "cargo": [
+     "CARGO:FACTORY_A_0"
+    ],
+    "transport": "TRUCK 1:1"
+   },
+   "ph": "E"
+  },
+  {
+   "ts": 23,
+   "pid": "TRUCK 1:1",
+   "tid": "TRUCK 1:1",
+   "cat": "ddd",
+   "args": {
+    "cargo": [],
+    "transport": "TRUCK 1:1"
+   },
+   "ph": "B",
+   "name": "PORT-FACTORY"
+  },
+  {
+   "ts": 24,
+   "pid": "TRUCK 0:0",
+   "tid": "TRUCK 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [],
+    "transport": "TRUCK 0:0"
+   },
+   "ph": "E"
+  },
+  {
+   "ts": 24,
+   "pid": "TRUCK 1:1",
+   "tid": "TRUCK 1:1",
+   "cat": "ddd",
+   "args": {
+    "cargo": [],
+    "transport": "TRUCK 1:1"
+   },
+   "ph": "E"
+  },
+  {
+   "ts": 24,
+   "pid": "TRUCK 0:0",
+   "tid": "TRUCK 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [
+     "CARGO:FACTORY_A_0"
+    ],
+    "transport": "TRUCK 0:0"
+   },
+   "ph": "B",
+   "name": "FACTORY-PORT"
+  },
+  {
+   "ts": 24,
+   "pid": "TRUCK 1:1",
+   "tid": "TRUCK 1:1",
+   "cat": "ddd",
+   "args": {
+    "cargo": [
+     "CARGO:FACTORY_B_0"
+    ],
+    "transport": "TRUCK 1:1"
+   },
+   "ph": "B",
+   "name": "FACTORY-WAREHOUSEB"
+  },
+  {
+   "ts": 25,
+   "pid": "TRUCK 0:0",
+   "tid": "TRUCK 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [
+     "CARGO:FACTORY_A_0"
+    ],
+    "transport": "TRUCK 0:0"
+   },
+   "ph": "E"
+  },
+  {
+   "ts": 25,
+   "pid": "BOAT 0:0",
+   "tid": "BOAT 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [
+     "CARGO:FACTORY_A_0"
+    ],
+    "transport": "BOAT 0:0"
+   },
+   "ph": "E"
+  },
+  {
+   "ts": 25,
+   "pid": "TRUCK 0:0",
+   "tid": "TRUCK 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [],
+    "transport": "TRUCK 0:0"
+   },
+   "ph": "B",
+   "name": "PORT-FACTORY"
+  },
+  {
+   "ts": 25,
+   "pid": "BOAT 0:0",
+   "tid": "BOAT 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [],
+    "transport": "BOAT 0:0"
+   },
+   "ph": "B",
+   "name": "A-PORT"
+  },
+  {
+   "ts": 26,
+   "pid": "TRUCK 0:0",
+   "tid": "TRUCK 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [],
+    "transport": "TRUCK 0:0"
+   },
+   "ph": "E"
+  },
+  {
+   "ts": 26,
+   "pid": "TRUCK 0:0",
+   "tid": "TRUCK 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [
+     "CARGO:FACTORY_B_0"
+    ],
+    "transport": "TRUCK 0:0"
+   },
+   "ph": "B",
+   "name": "FACTORY-WAREHOUSEB"
+  },
+  {
+   "ts": 29,
+   "pid": "TRUCK 1:1",
+   "tid": "TRUCK 1:1",
+   "cat": "ddd",
+   "args": {
+    "cargo": [
+     "CARGO:FACTORY_B_0"
+    ],
+    "transport": "TRUCK 1:1"
+   },
+   "ph": "E"
+  },
+  {
+   "ts": 29,
+   "pid": "BOAT 0:0",
+   "tid": "BOAT 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [],
+    "transport": "BOAT 0:0"
+   },
+   "ph": "E"
+  },
+  {
+   "ts": 29,
+   "pid": "TRUCK 1:1",
+   "tid": "TRUCK 1:1",
+   "cat": "ddd",
+   "args": {
+    "cargo": [],
+    "transport": "TRUCK 1:1"
+   },
+   "ph": "B",
+   "name": "B-FACTORY"
+  },
+  {
+   "ts": 29,
+   "pid": "BOAT 0:0",
+   "tid": "BOAT 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [
+     "CARGO:FACTORY_A_0"
+    ],
+    "transport": "BOAT 0:0"
+   },
+   "ph": "B",
+   "name": "PORT-WAREHOUSEA"
+  },
+  {
+   "ts": 31,
+   "pid": "TRUCK 0:0",
+   "tid": "TRUCK 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [
+     "CARGO:FACTORY_B_0"
+    ],
+    "transport": "TRUCK 0:0"
+   },
+   "ph": "E"
+  },
+  {
+   "ts": 31,
+   "pid": "TRUCK 0:0",
+   "tid": "TRUCK 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [],
+    "transport": "TRUCK 0:0"
+   },
+   "ph": "B",
+   "name": "B-FACTORY"
+  },
+  {
+   "ts": 33,
+   "pid": "BOAT 0:0",
+   "tid": "BOAT 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [
+     "CARGO:FACTORY_A_0"
+    ],
+    "transport": "BOAT 0:0"
+   },
+   "ph": "E"
+  },
+  {
+   "ts": 33,
+   "pid": "BOAT 0:0",
+   "tid": "BOAT 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [],
+    "transport": "BOAT 0:0"
+   },
+   "ph": "B",
+   "name": "A-PORT"
+  },
+  {
+   "ts": 34,
+   "pid": "TRUCK 1:1",
+   "tid": "TRUCK 1:1",
+   "cat": "ddd",
+   "args": {
+    "cargo": [],
+    "transport": "TRUCK 1:1"
+   },
+   "ph": "E"
+  },
+  {
+   "ts": 34,
+   "pid": "TRUCK 1:1",
+   "tid": "TRUCK 1:1",
+   "cat": "ddd",
+   "args": {
+    "cargo": [
+     "CARGO:FACTORY_B_0"
+    ],
+    "transport": "TRUCK 1:1"
+   },
+   "ph": "B",
+   "name": "FACTORY-WAREHOUSEB"
+  },
+  {
+   "ts": 36,
+   "pid": "TRUCK 0:0",
+   "tid": "TRUCK 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [],
+    "transport": "TRUCK 0:0"
+   },
+   "ph": "E"
+  },
+  {
+   "ts": 37,
+   "pid": "BOAT 0:0",
+   "tid": "BOAT 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [],
+    "transport": "BOAT 0:0"
+   },
+   "ph": "E"
+  },
+  {
+   "ts": 37,
+   "pid": "BOAT 0:0",
+   "tid": "BOAT 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [
+     "CARGO:FACTORY_A_0"
+    ],
+    "transport": "BOAT 0:0"
+   },
+   "ph": "B",
+   "name": "PORT-WAREHOUSEA"
+  },
+  {
+   "ts": 39,
+   "pid": "TRUCK 1:1",
+   "tid": "TRUCK 1:1",
+   "cat": "ddd",
+   "args": {
+    "cargo": [
+     "CARGO:FACTORY_B_0"
+    ],
+    "transport": "TRUCK 1:1"
+   },
+   "ph": "E"
+  },
+  {
+   "ts": 39,
+   "pid": "TRUCK 1:1",
+   "tid": "TRUCK 1:1",
+   "cat": "ddd",
+   "args": {
+    "cargo": [],
+    "transport": "TRUCK 1:1"
+   },
+   "ph": "B",
+   "name": "B-FACTORY"
+  },
+  {
+   "ts": 41,
+   "pid": "BOAT 0:0",
+   "tid": "BOAT 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [
+     "CARGO:FACTORY_A_0"
+    ],
+    "transport": "BOAT 0:0"
+   },
+   "ph": "E"
+  },
+  {
+   "ts": 41,
+   "pid": "BOAT 0:0",
+   "tid": "BOAT 0:0",
+   "cat": "ddd",
+   "args": {
+    "cargo": [],
+    "transport": "BOAT 0:0"
+   },
+   "ph": "B",
+   "name": "A-PORT"
+  }
+ ]
+}
