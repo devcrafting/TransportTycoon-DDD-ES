@@ -8,7 +8,7 @@ open TransportTycoon.Domain
 let should =
     testList "All tests" [
         testList "Compute how long it takes to deliver should" [
-            let withTransports = [ Truck WaitingAt Factory; Truck WaitingAt Factory; Boat WaitingAt Port ]
+            let withTransports = [ Truck 0 WaitingAt Factory; Truck 1 WaitingAt Factory; Boat 0 WaitingAt Port ]
             testCase "return 0 when no cargos" (fun () ->
                 test <@ computeHowLongItTakesToDeliver [] withTransports |> fst = 0 @>
             )
@@ -36,26 +36,26 @@ let should =
                 let waitingTransportWithCargoStockedAtWaitingLocation =
                     { world with
                         StockedCargos = Map.ofList [(Factory, [WarehouseA]); (Port, [WarehouseA])]
-                        Transports = [ Truck WaitingAt Factory; Boat WaitingAt Port ]
+                        Transports = [ Truck 0 WaitingAt Factory; Boat 0 WaitingAt Port ]
                     }
                 let currentTime = System.Random().Next()
                 test <@ load currentTime waitingTransportWithCargoStockedAtWaitingLocation = 
                             {
                                 StockedCargos = Map.ofList [(Factory, []); (Port, [])]
                                 Transports = [
-                                    Truck InTransitTo (Port, Some WarehouseA, 1)
-                                    Boat InTransitTo (WarehouseA, Some WarehouseA, 4)
+                                    Truck 0 InTransitTo (Port, Some WarehouseA, 1)
+                                    Boat 0 InTransitTo (WarehouseA, Some WarehouseA, 4)
                                 ]
                                 History = [
                                     DepartedTo (Port, {
                                         Time = currentTime
-                                        Kind = Transport.Truck
+                                        Kind = Transport.Truck 0
                                         Location = Factory
                                         Cargo = Some { Destination = WarehouseA }
                                     })
                                     DepartedTo (WarehouseA, {
                                         Time = currentTime
-                                        Kind = Transport.Boat
+                                        Kind = Transport.Boat 0
                                         Location = Port
                                         Cargo = Some { Destination = WarehouseA }
                                     })
@@ -66,7 +66,7 @@ let should =
                 let waitingTransportWithoutCargosStocked =
                     { world with
                         StockedCargos = Map.ofList []
-                        Transports = [ Truck WaitingAt Factory ]
+                        Transports = [ Truck 0 WaitingAt Factory ]
                     }
                 test <@ load 0 waitingTransportWithoutCargosStocked = 
                             waitingTransportWithoutCargosStocked @>
@@ -75,7 +75,7 @@ let should =
                 let inTransitTransport =
                     { world with
                         StockedCargos = Map.ofList []
-                        Transports = [ Truck InTransitTo (Port, Some WarehouseA, 1) ]
+                        Transports = [ Truck 0 InTransitTo (Port, Some WarehouseA, 1) ]
                     }
                 test <@ load 0 inTransitTransport = inTransitTransport @>
             )
@@ -87,16 +87,16 @@ let should =
                     { world with
                         StockedCargos = Map.ofList [(Factory, []); (Port, [])]
                         Transports = [
-                            Truck InTransitTo (WarehouseB, Some WarehouseB, 4)
-                            Boat InTransitTo (WarehouseA, Some WarehouseA, 4)
+                            Truck 0 InTransitTo (WarehouseB, Some WarehouseB, 4)
+                            Boat 0 InTransitTo (WarehouseA, Some WarehouseA, 4)
                         ]
                     }
                 test <@ move 0 inTransitTransports = 
                             { world with
                                 StockedCargos = Map.ofList [(Factory, []); (Port, [])]
                                 Transports = [
-                                    Truck InTransitTo (WarehouseB, Some WarehouseB, 3)
-                                    Boat InTransitTo (WarehouseA, Some WarehouseA, 3)
+                                    Truck 0 InTransitTo (WarehouseB, Some WarehouseB, 3)
+                                    Boat 0 InTransitTo (WarehouseA, Some WarehouseA, 3)
                                 ]
                             } @>
             )
@@ -105,8 +105,8 @@ let should =
                     { world with
                         StockedCargos = Map.ofList [(Factory, []); (Port, [])]
                         Transports = [
-                            Truck InTransitTo (Port, Some WarehouseA, 1)
-                            Boat InTransitTo (WarehouseA, Some WarehouseA, 1)
+                            Truck 0 InTransitTo (Port, Some WarehouseA, 1)
+                            Boat 0 InTransitTo (WarehouseA, Some WarehouseA, 1)
                         ]
                     }
                 let currentTime = System.Random().Next()
@@ -114,19 +114,19 @@ let should =
                             {
                                 StockedCargos = Map.ofList [(Factory, []); (Port, [])]
                                 Transports = [
-                                    Truck ArrivingIn (Port, WarehouseA)
-                                    Boat ArrivingIn (WarehouseA, WarehouseA)
+                                    Truck 0 ArrivingIn (Port, WarehouseA)
+                                    Boat 0 ArrivingIn (WarehouseA, WarehouseA)
                                 ]
                                 History = [
                                     ArrivedIn {
                                         Time = currentTime
-                                        Kind = Transport.Truck
+                                        Kind = Transport.Truck 0
                                         Location = Port
                                         Cargo = Some { Destination = WarehouseA }
                                     }
                                     ArrivedIn {
                                         Time = currentTime
-                                        Kind = Transport.Boat
+                                        Kind = Transport.Boat 0
                                         Location = WarehouseA
                                         Cargo = Some { Destination = WarehouseA }
                                     }
@@ -138,8 +138,8 @@ let should =
                     { world with
                         StockedCargos = Map.ofList [(Factory, []); (Port, [])]
                         Transports = [
-                            Truck InTransitTo (Factory, None, 1)
-                            Boat InTransitTo (Port, None, 1)
+                            Truck 0 InTransitTo (Factory, None, 1)
+                            Boat 0 InTransitTo (Port, None, 1)
                         ]
                     }
                 let currentTime = System.Random().Next()
@@ -147,19 +147,19 @@ let should =
                             {
                                 StockedCargos = Map.ofList [(Factory, []); (Port, [])]
                                 Transports = [
-                                    Truck WaitingAt Factory
-                                    Boat WaitingAt Port
+                                    Truck 0 WaitingAt Factory
+                                    Boat 0 WaitingAt Port
                                 ]
                                 History = [
                                     ArrivedIn {
                                         Time = currentTime
-                                        Kind = Transport.Truck
+                                        Kind = Transport.Truck 0
                                         Location = Factory
                                         Cargo = None
                                     }
                                     ArrivedIn {
                                         Time = currentTime
-                                        Kind = Transport.Boat
+                                        Kind = Transport.Boat 0
                                         Location = Port
                                         Cargo = None
                                     }
@@ -171,8 +171,8 @@ let should =
                     { world with
                         StockedCargos = Map.ofList [(Factory, []); (Port, [])]
                         Transports = [
-                            Truck WaitingAt Factory
-                            Boat ArrivingIn (Port, WarehouseA)
+                            Truck 0 WaitingAt Factory
+                            Boat 0 ArrivingIn (Port, WarehouseA)
                         ]
                     }
                 test <@ move 0 notInTransitTransports = notInTransitTransports @>
@@ -185,8 +185,8 @@ let should =
                     { world with
                         StockedCargos = Map.ofList []
                         Transports = [
-                            Truck ArrivingIn (WarehouseB, WarehouseB)
-                            Boat ArrivingIn (WarehouseA, WarehouseA)
+                            Truck 0 ArrivingIn (WarehouseB, WarehouseB)
+                            Boat 0 ArrivingIn (WarehouseA, WarehouseA)
                         ]
                     }
                 let currentTime = System.Random().Next()
@@ -194,19 +194,19 @@ let should =
                             {
                                 StockedCargos = Map.ofList [(WarehouseA, [WarehouseA]); (WarehouseB, [WarehouseB])]
                                 Transports = [
-                                    Truck InTransitTo (Factory, None, 5)
-                                    Boat InTransitTo (Port, None, 4)
+                                    Truck 0 InTransitTo (Factory, None, 5)
+                                    Boat 0 InTransitTo (Port, None, 4)
                                 ]
                                 History = [
                                     DepartedTo (Factory, {
                                         Time = currentTime
-                                        Kind = Transport.Truck
+                                        Kind = Transport.Truck 0
                                         Location = WarehouseB
                                         Cargo = None
                                     })
                                     DepartedTo (Port, {
                                         Time = currentTime
-                                        Kind = Transport.Boat
+                                        Kind = Transport.Boat 0
                                         Location = WarehouseA
                                         Cargo = None
                                     })
@@ -218,8 +218,8 @@ let should =
                     { world with
                         StockedCargos = Map.ofList []
                         Transports = [
-                            Truck WaitingAt Factory
-                            Boat InTransitTo (Port, None, 4)
+                            Truck 0 WaitingAt Factory
+                            Boat 0 InTransitTo (Port, None, 4)
                         ]
                     }
                 test <@ unload 0 notArrivingTranports = notArrivingTranports @>

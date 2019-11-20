@@ -7,7 +7,7 @@ let world = { StockedCargos = Map.empty; Transports = []; History = [] }
 let initialCargos = Map.empty |> Map.add Factory [WarehouseA; WarehouseB(*; WarehouseA*)]
 let startingState = { world with
     StockedCargos = initialCargos
-    Transports = [ Truck WaitingAt Factory; Truck WaitingAt Factory; Boat WaitingAt Port ]
+    Transports = [ Truck 0 WaitingAt Factory; Truck 1 WaitingAt Factory; Boat 0 WaitingAt Port ]
 }
 let availableCargos = initialCargos |> Map.find Factory
 let stockedCargosAfterUnloading =
@@ -16,22 +16,22 @@ let stockedCargosAfterUnloading =
     |> Map.add Port [WarehouseA]
 let stateAfter1Hour = { world with
     StockedCargos = stockedCargosAfterUnloading 
-    Transports = [ Truck InTransitTo (Factory, None, 1); Truck InTransitTo (WarehouseB, Some WarehouseB, 4); Boat WaitingAt Port ]
+    Transports = [ Truck 0 InTransitTo (Factory, None, 1); Truck 1 InTransitTo (WarehouseB, Some WarehouseB, 4); Boat 0 WaitingAt Port ]
 }
 let stockedCargosAfterLoadingBoat = stockedCargosAfterUnloading |> Map.remove Port
 let stateAfter2Hours = { world with
     StockedCargos = stockedCargosAfterLoadingBoat
-    Transports = [ Truck WaitingAt Factory; Truck InTransitTo (WarehouseB, Some WarehouseB, 3); Boat InTransitTo (WarehouseA, Some WarehouseA, 3) ]
+    Transports = [ Truck 0 WaitingAt Factory; Truck 1 InTransitTo (WarehouseB, Some WarehouseB, 3); Boat 0 InTransitTo (WarehouseA, Some WarehouseA, 3) ]
 }
 let stockedCargosAfterLoadingLastCargo = stockedCargosAfterLoadingBoat |> Map.remove Factory
 let stateAfter3Hours = { world with
     StockedCargos = stockedCargosAfterLoadingLastCargo
-    Transports = [ Truck WaitingAt Factory (*ArrivingIn (WarehouseA, Port)*); Truck InTransitTo (WarehouseB, Some WarehouseB, 2); Boat InTransitTo (WarehouseA, Some WarehouseA, 2) ]
+    Transports = [ Truck 0 WaitingAt Factory (*ArrivingIn (WarehouseA, Port)*); Truck 1 InTransitTo (WarehouseB, Some WarehouseB, 2); Boat 0 InTransitTo (WarehouseA, Some WarehouseA, 2) ]
 }
 let stockedCargosAfterBufferInPort = stockedCargosAfterLoadingLastCargo// |> Map.add Port [WarehouseA]
 let stateAfter4Hours = { world with
     StockedCargos = stockedCargosAfterBufferInPort
-    Transports = [ Truck WaitingAt Factory; Truck InTransitTo (WarehouseB, Some WarehouseB, 1); Boat InTransitTo (WarehouseA, Some WarehouseA, 1) ]
+    Transports = [ Truck 0 WaitingAt Factory; Truck 1 InTransitTo (WarehouseB, Some WarehouseB, 1); Boat 0 InTransitTo (WarehouseA, Some WarehouseA, 1) ]
 }
 let stockedCargosAfterUnloadingInWarehouse =
     stockedCargosAfterBufferInPort
@@ -39,7 +39,7 @@ let stockedCargosAfterUnloadingInWarehouse =
     |> Map.add WarehouseB [WarehouseB]
 let stateAfter5Hours = { world with
     StockedCargos = stockedCargosAfterUnloadingInWarehouse
-    Transports = [ Truck WaitingAt Factory; Truck InTransitTo (Factory, None, 5); Boat InTransitTo (Port, None, 4) ]
+    Transports = [ Truck 0 WaitingAt Factory; Truck 1 InTransitTo (Factory, None, 5); Boat 0 InTransitTo (Port, None, 4) ]
 }
 
 startingState |> spend1Hour 0 = stateAfter1Hour
@@ -53,5 +53,5 @@ open TransportTycoon.Infra
 
 let finalState = 
     computeHowLongItTakesToDeliver [ WarehouseA; WarehouseB ]
-        [ Truck WaitingAt Factory; Truck WaitingAt Factory; Boat WaitingAt Port ]
+        [ Truck 0 WaitingAt Factory; Truck 1 WaitingAt Factory; Boat 0 WaitingAt Port ]
 (snd finalState).History |> writeLogs

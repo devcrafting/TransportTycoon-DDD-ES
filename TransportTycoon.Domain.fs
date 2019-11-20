@@ -10,8 +10,8 @@ type Position =
     | InTransitTo of Location * cargoDestination:Location option * remainingHours:int
     | ArrivingIn of Location * cargoDestination:Location
 type Transport =
-    | Truck
-    | Boat
+    | Truck of int
+    | Boat of int
 type Hours = int
 type Leg = Leg of from:Location * to':Location * Hours
 type Path = Path of Leg list
@@ -21,7 +21,6 @@ type Event =
     | ArrivedIn of EventData
 and EventData = {
     Time: Hours
-    //TransportId: int
     Kind: Transport
     Location: Location
     Cargo: Cargo option
@@ -38,8 +37,8 @@ type World = {
     History: Event list
 }
 
-let Truck position positionData = Truck, position positionData
-let Boat position positionData = Boat, position positionData
+let Truck id position positionData = Truck id, position positionData
+let Boat id position positionData = Boat id, position positionData
 let Path legs = 
     let (Leg (_, destination, _)) = legs |> List.last
     destination, Path legs 

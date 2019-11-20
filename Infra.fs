@@ -15,9 +15,14 @@ let writeLogs events =
             match data.Cargo with
             | Some cargo -> sprintf ",\"cargo\": [{ \"cargo_id\": 0, \"destination\": \"%s\", \"origin\": \"FACTORY\"}]" (cargo.Destination |> locationToString)
             | None -> ""
-        printfn "{\"event\": \"%s\", \"time\": %i, \"transport_id\": 0, \"kind\": \"%s\", \"location\": \"%s\"%s%s}"
+        let transportId =
+            match data.Kind with
+            | Truck id -> id
+            | Boat id -> id        
+        printfn "{\"event\": \"%s\", \"time\": %i, \"transport_id\": %i, \"kind\": \"%s\", \"location\": \"%s\"%s%s}"
             eventType
             data.Time
+            transportId
             (data.Kind.ToString().ToUpper())
             (data.Location |> locationToString)
             destinationIfAny
