@@ -1,8 +1,8 @@
-module TransportTycoonShould
+module TransportTycoon.DomainShould
 
 open Expecto
 open Swensen.Unquote
-open TransportTycoon
+open TransportTycoon.Domain
 
 [<Tests>]
 let should =

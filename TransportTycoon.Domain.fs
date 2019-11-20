@@ -1,4 +1,4 @@
-module TransportTycoon
+module TransportTycoon.Domain
 
 type Location =
     | Factory

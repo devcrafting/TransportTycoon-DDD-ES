@@ -4,9 +4,10 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="TransportTycoon.fs" />
+    <Compile Include="TransportTycoon.Domain.fs" />
     <None Include="test.fsx" />
-    <Compile Include="TransportTycoon.Should.fs" />
+    <Compile Include="TransportTycoon.DomainShould.fs" />
+    <Compile Include="Infra.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>

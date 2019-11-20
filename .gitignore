@@ -1,2 +1,4 @@
 bin/
 obj/
+logs/
+trace.py

@@ -1,6 +1,6 @@
-#load "TransportTycoon.fs"
+#load "TransportTycoon.Domain.fs"
 
-open TransportTycoon
+open TransportTycoon.Domain
 
 let world = { StockedCargos = Map.empty; Transports = []; History = [] }
 
@@ -48,5 +48,10 @@ stateAfter2Hours |> spend1Hour 2 = stateAfter3Hours
 stateAfter3Hours |> spend1Hour 3 = stateAfter4Hours
 stateAfter4Hours |> spend1Hour 4 = stateAfter5Hours
 
-computeHowLongItTakesToDeliver [ WarehouseA; WarehouseB ]
-    [ Truck WaitingAt Factory; Truck WaitingAt Factory; Boat WaitingAt Port ]
+#load "Infra.fs"
+open TransportTycoon.Infra
+
+let finalState = 
+    computeHowLongItTakesToDeliver [ WarehouseA; WarehouseB ]
+        [ Truck WaitingAt Factory; Truck WaitingAt Factory; Boat WaitingAt Port ]
+(snd finalState).History |> writeLogs
